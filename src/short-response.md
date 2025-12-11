@@ -42,12 +42,28 @@ console.log(getLetterGrade(65)); // This should print "Your grade is: F"
 
 **Part A:**
 
-Your response...
+The bug occurs because of block scoping in JavaScript. Inside each `if` and `else` `if` block, the code uses `let letter = ...`, which declares a new variable letter that exists only within that block. This means the outer letter variable declared at the start of the function is never updated. As a result, when the function tries to return `"Your grade is: " + letter`, it uses the outer variable, which is still `undefined`.
 
 **Part B:**
 
-Your response...
+To fix the bug, you need to remove the let keyword inside the `if` and `else` blocks so that the assignments update the outer function-scoped letter variable instead of creating new block-scoped variables. This makes sure the outer letter variable holds the correct value when the function returns it. The corrected code looks like this:
 
+```javaScript
+const getLetterGrade = (score) => {
+  let letter;
+  if (score >= 90) {
+    letter = "A";
+  } else if (score >= 80) {
+    letter = "B";
+  } else if (score >= 70) {
+    letter = "C";
+  } else {
+    letter = "F";
+  }
+
+  return "Your grade is: " + letter;
+}
+```
 ---
 
 ## Prompt 2
@@ -69,20 +85,22 @@ console.log(originalSettings.volume);
 
 **Part A:**
 
-Your response...
+This will log 75. This happens because in JavaScript, objects are assigned and passed by reference, not by value. When you write `const newSettings = originalSettings`, both `newSettings` and `originalSettings` refer to the same object in memory. Therefore, modifying a property through `newSettings` `(newSettings.volume = 75)` also changes `originalSettings.volume` because they point to the same object.
 
 **Part B:**
 
-Your response...
+To prevent changes to `newSettings` from affecting `originalSettings`, you need to create a copy of the original object instead of assigning the reference. One simple way to do this is using the spread operator `(...)`:
 
 **Corrected Code:**
 
 ```js
 // Fix this code so newSettings is a true copy
 const originalSettings = { volume: 50, brightness: 80 };
-const newSettings = originalSettings;
+const newSettings = { ...originalSettings }; 
 newSettings.volume = 75;
-console.log(originalSettings.volume);
+console.log(originalSettings.volume); 
+console.log(newSettings.volume);      
+
 ```
 
 ---
@@ -110,4 +128,4 @@ Walk through what happens in the first iteration of filter:
 
 ### Response 3
 
-Your response...
+In the first iteration of the filter method, the parameter product holds the first element of the products array, which is the object `{ name: "Laptop", price: 1000, inStock: true }`. The callback function review `product.inStock` and returns `true` because the property is truthy. The filter method uses this returned `boolean` to decide whether to include the element in the new array, so the Laptop object is added to `itemsInStock`.
